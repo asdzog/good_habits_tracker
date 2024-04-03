@@ -1,3 +1,41 @@
+from django.conf import settings
 from django.db import models
 
-# Create your models here.
+from users.models import NULLABLE
+
+
+class PleasantHabit(models.Model):
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='пользователь')
+    action = models.CharField(max_length=100, verbose_name='действие')
+    place = models.CharField(max_length=64, **NULLABLE, verbose_name='место')
+    is_pleasant = models.BooleanField(default=True, verbose_name='является приятной')
+
+    def __str__(self):
+        return f'{self.action}'
+
+    class Meta:
+        verbose_name = 'приятная привычка'
+        verbose_name_plural = 'приятные привычки'
+
+
+class Habit(models.Model):
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='пользователь')
+    scheduled_time = models.TimeField(verbose_name='время дня для выполнения')
+    place = models.CharField(max_length=64, **NULLABLE, verbose_name='место')
+    action = models.CharField(max_length=100, **NULLABLE, verbose_name='действие')
+    is_pleasant = models.BooleanField(default=False, verbose_name='является приятной')
+    related_habit = models.ForeignKey(PleasantHabit, on_delete=models.SET_NULL,
+                                      **NULLABLE, verbose_name='связанная привычка')
+    days_between_repeat = models.PositiveIntegerField(default=1, verbose_name='дней между повторами')
+    award = models.CharField(max_length=100, **NULLABLE, verbose_name='награда')
+    duration = models.PositiveIntegerField(default=120, verbose_name='длительность, сек')
+    is_public = models.BooleanField(default=False, verbose_name='является публичной')
+
+    def __str__(self):
+        return f'{self.action}'
+
+    class Meta:
+        verbose_name = 'полезная привычка'
+        verbose_name_plural = 'полезные привычки'
