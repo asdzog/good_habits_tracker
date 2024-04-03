@@ -6,12 +6,17 @@ from habits.validators import HabitAwardValidator, ActionTimeValidator, RepeatVa
 
 class PleasantHabitSerializer(serializers.ModelSerializer):
 
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = PleasantHabit
         fields = '__all__'
 
 
 class HabitSerializer(serializers.ModelSerializer):
+
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Habit
         fields = '__all__'
