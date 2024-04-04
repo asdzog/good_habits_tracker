@@ -2,7 +2,8 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from habits.models import Habit
-from habits.serializers import HabitSerializer
+from habits.paginators import HabitsPagination
+from habits.serializers import HabitSerializer, PleasantHabitSerializer
 from users.permissions import IsOwner
 
 
@@ -10,22 +11,34 @@ class HabitCreateAPIView(generics.CreateAPIView):
     serializer_class = HabitSerializer
     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        new_habit = serializer.save()
-        new_habit.user = self.request.user
-        new_habit.save()
-
 
 class PublicHabitListAPIView(generics.ListAPIView):
     serializer_class = HabitSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [AllowAny]
+    pagination_class = HabitsPagination
 
     def get_queryset(self):
         queryset = Habit.objects.all()
         return queryset.filter(is_public=True)
 
 
-class HabitDetailsAPIView(generics.UpdateAPIView):
+class PleasantCreateAPIView(generics.CreateAPIView):
+    serializer_class = PleasantHabitSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class PleasantHabitListAPIView(generics.ListAPIView):
+    serializer_class = PleasantHabitSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
+
+
+class HabitListAPIView(generics.ListAPIView):
+    serializer_class = HabitSerializer
+    queryset = Habit.objects.all()
+    permission_classes = [IsAuthenticated, IsOwner]
+
+
+class HabitDetailsAPIView(generics.RetrieveAPIView):
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
     permission_classes = [IsAuthenticated, IsOwner]
