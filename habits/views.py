@@ -19,17 +19,17 @@ class PublicHabitListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Habit.objects.all()
-        return queryset.filter(user=self.request.user)
+        return queryset.filter(is_public=True)
 
 
 class PrivateHabitListAPIView(generics.ListAPIView):
     serializer_class = HabitSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated, IsOwner]
     pagination_class = HabitsPagination
 
     def get_queryset(self):
         queryset = Habit.objects.all()
-        return queryset.filter(is_public=True)
+        return queryset.filter(user=self.request.user)
 
 
 class HabitListAPIView(generics.ListAPIView):
