@@ -4,21 +4,6 @@ from django.db import models
 from users.models import NULLABLE
 
 
-class PleasantHabit(models.Model):
-
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='пользователь')
-    action = models.CharField(max_length=100, verbose_name='действие')
-    place = models.CharField(max_length=64, **NULLABLE, verbose_name='место')
-    is_pleasant = models.BooleanField(default=True, verbose_name='является приятной')
-
-    def __str__(self):
-        return f'{self.action}'
-
-    class Meta:
-        verbose_name = 'приятная привычка'
-        verbose_name_plural = 'приятные привычки'
-
-
 class Habit(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='пользователь')
@@ -26,7 +11,7 @@ class Habit(models.Model):
     place = models.CharField(max_length=64, **NULLABLE, verbose_name='место')
     action = models.CharField(max_length=100, **NULLABLE, verbose_name='действие')
     is_pleasant = models.BooleanField(default=False, verbose_name='является приятной')
-    related_habit = models.ForeignKey(PleasantHabit, on_delete=models.SET_NULL,
+    related_habit = models.ForeignKey('self', on_delete=models.SET_NULL,
                                       **NULLABLE, verbose_name='связанная привычка')
     days_between_repeat = models.PositiveIntegerField(default=1, verbose_name='дней между повторами')
     award = models.CharField(max_length=100, **NULLABLE, verbose_name='награда')
@@ -34,8 +19,8 @@ class Habit(models.Model):
     is_public = models.BooleanField(default=False, verbose_name='является публичной')
 
     def __str__(self):
-        return f'{self.action}'
+        return f'{self.action} в {self.scheduled_time}, место: {self.place}'
 
     class Meta:
-        verbose_name = 'полезная привычка'
-        verbose_name_plural = 'полезные привычки'
+        verbose_name = 'привычка'
+        verbose_name_plural = 'привычки'

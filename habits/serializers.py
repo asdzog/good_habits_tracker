@@ -1,16 +1,7 @@
 from rest_framework import serializers
 
-from habits.models import Habit, PleasantHabit
+from habits.models import Habit
 from habits.validators import HabitAwardValidator, ActionTimeValidator, RepeatValidator
-
-
-class PleasantHabitSerializer(serializers.ModelSerializer):
-
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-
-    class Meta:
-        model = PleasantHabit
-        fields = '__all__'
 
 
 class HabitSerializer(serializers.ModelSerializer):
