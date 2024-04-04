@@ -9,7 +9,7 @@ class HabitAwardValidator:
 
     def __call__(self, value):
         if dict(value).get(self.award) and dict(value).get(self.is_pleasant):
-            raise ValidationError('Можно выбрать только одно: или награду, или приятную привычку в виде вознаграждения.')
+            raise ValidationError('Можно выбрать только одно: или награду, или приятную привычку как вознаграждение.')
 
 
 class ActionTimeValidator:
@@ -38,11 +38,28 @@ class RepeatValidator:
 
 class PleasantHabitValidator:
 
-    def __init__(self, is_pleasant_field):
+    def __init__(self, is_pleasant_field, award_field, related_field):
         self.is_pleasant = is_pleasant_field
+        self.award = award_field
+        self.related = related_field
 
     def __call__(self, value):
-        if self.is_pleasant:
-            raise ValidationError(f"Периодичность не может быть свыше 7 дней."
-                                  f"Сейчас указано значение {days} дней.")
+        pleasant = dict(value).get(self.is_pleasant)
+        award = dict(value).get(self.award)
+        related = dict(value).get(self.related)
+        if pleasant and (award or related):
+            raise ValidationError("У приятной привычки не может быть вознаграждения или связанной привычки.")
 
+
+class RelatedHabitValidator:
+
+    def __init__(self, is_pleasant_field, related_field):
+        self.is_pleasant = is_pleasant_field
+        self.related = related_field
+
+    def __call__(self, value):
+        pleasant = dict(value).get(self.is_pleasant)
+        related = dict(value).get(self.related)
+        if related:
+            if not pleasant:
+                raise ValidationError(f"Связанной может быть только приятная привычка.")
