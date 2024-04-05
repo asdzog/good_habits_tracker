@@ -29,7 +29,7 @@ class PrivateHabitListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Habit.objects.all()
-        return queryset.filter(user=self.request.user)
+        return queryset.filter(user=self.request.user, is_public=False)
 
 
 class HabitListAPIView(generics.ListAPIView):
