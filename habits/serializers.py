@@ -18,5 +18,5 @@ class HabitSerializer(serializers.ModelSerializer):
             RepeatValidator(days_field='days_between_repeat'),
             PleasantHabitValidator(is_pleasant_field='is_pleasant',
                                    award_field='award', related_field='related_habit'),
-            RelatedHabitValidator(is_pleasant_field='is_pleasant', related_field='related_habit'),
+            RelatedHabitValidator(related_field='related_habit'),
         ]

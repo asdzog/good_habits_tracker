@@ -19,9 +19,9 @@ class ActionTimeValidator:
 
     def __call__(self, value):
         seconds = dict(value).get(self.time)
-        if int(seconds) > 120:
+        if seconds is not None and int(seconds) > 120:
             raise ValidationError(f"Длительность не может быть свыше двух минут (120 сек)."
-                                  f"Сейчас указано значение {seconds} секунд.")
+                                  f"Сейчас указано значение {seconds}.")
 
 
 class RepeatValidator:
@@ -31,9 +31,9 @@ class RepeatValidator:
 
     def __call__(self, value):
         days = dict(value).get(self.days)
-        if int(days) > 7:
+        if days is not None and int(days) > 7:
             raise ValidationError(f"Периодичность не может быть свыше 7 дней."
-                                  f"Сейчас указано значение {days} дней.")
+                                  f"Сейчас указано значение {days}.")
 
 
 class PleasantHabitValidator:
@@ -53,13 +53,12 @@ class PleasantHabitValidator:
 
 class RelatedHabitValidator:
 
-    def __init__(self, is_pleasant_field, related_field):
-        self.is_pleasant = is_pleasant_field
+    def __init__(self, related_field):
         self.related = related_field
 
     def __call__(self, value):
-        pleasant = dict(value).get(self.is_pleasant)
-        related = dict(value).get(self.related)
+        related = dict(value).get(self.related) if self.related else None
+        related_is_pleasant = related.__dict__['is_pleasant']
         if related:
-            if not pleasant:
+            if not related_is_pleasant:
                 raise ValidationError(f"Связанной может быть только приятная привычка.")
