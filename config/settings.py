@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework_simplejwt',
     'corsheaders',
+    'django_celery_beat',
 
     'users',
     'habits',
@@ -173,3 +174,5 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': timedelta(minutes=10),  # периодичность, в данном случае - каждые 10 минут
     },
 }
+
+TG_TOKEN = os.getenv('TG_TOKEN')
