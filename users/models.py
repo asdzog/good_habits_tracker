@@ -14,6 +14,8 @@ class User(AbstractUser):
     avatar = models.ImageField(upload_to='users/', **NULLABLE, verbose_name='аватар')
     is_active = models.BooleanField(default=False, verbose_name='активен')
 
+    telegram_chat_id = models.BigIntegerField(null=True, verbose_name='Telegram chat ID')
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
