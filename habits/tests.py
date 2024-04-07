@@ -75,8 +75,8 @@ class HabitTestCase(APITestCase):
 
         data_bad_pleasant = {
             'scheduled_time': '08:00:00',
-            'days_between_repeat': '8',
             'is_pleasant': 'True',
+            'award': 'test_award',
             'user': self.user
         }
 

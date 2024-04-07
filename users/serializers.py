@@ -6,7 +6,7 @@ from users.validators import ChatIDValidator
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["first_name", "last_name",  "email", "password", "telegram_chat_id"]
+        fields = ["first_name", "last_name", "email", "password", "telegram_chat_id"]
         validators = [ChatIDValidator(chat_id_field='telegram_chat_id'),]
 
     def create(self, validated_data):

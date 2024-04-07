@@ -7,10 +7,16 @@ from habits.models import Habit
 
 @shared_task
 def send_reminder():
-    """ Send message to user  15 minutes before the habit scheduled time """
-    current_time = timezone.now().time()
-    reminder_time = current_time + timedelta(minutes=15)
-    habits = Habit.objects.all().filter()
-    for habit in habits:
-        if habit.scheduled_time <= reminder_time:
-            send_telegram_notification(habit)
+    """ Send message to user 10 minutes before the habit scheduled time """
+    now = timezone.now()
+
+    qs = Habit.objects.filter(
+        scheduled_time__gte=now + timedelta(minutes=2),
+        scheduled_time__le=now + timedelta(minutes=3),
+    )
+    qs = qs.select_related('user').filter(
+        user__telegram_chat_id__isnull=False
+    )
+
+    for habit in qs:
+        send_telegram_notification(habit)
