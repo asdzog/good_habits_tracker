@@ -12,7 +12,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=64, **NULLABLE, verbose_name='фамилия')
     email = models.EmailField(unique=True, verbose_name='почта')
     avatar = models.ImageField(upload_to='users/', **NULLABLE, verbose_name='аватар')
-    is_active = models.BooleanField(default=False, verbose_name='активен')
+    is_active = models.BooleanField(default=True, verbose_name='активен')
 
     telegram_chat_id = models.BigIntegerField(null=True, verbose_name='Telegram chat ID')
 
