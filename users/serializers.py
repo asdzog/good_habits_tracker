@@ -10,7 +10,12 @@ class UserSerializer(serializers.ModelSerializer):
         validators = [ChatIDValidator(chat_id_field='telegram_chat_id'),]
 
     def create(self, validated_data):
-        user = User(email=validated_data["email"])
+
+        user = User(first_name=validated_data["first_name"],
+                    last_name=validated_data["last_name"],
+                    telegram_chat_id=validated_data["telegram_chat_id"],
+                    email=validated_data["email"]
+                    )
         user.set_password(validated_data["password"])
         user.save()
         return user
