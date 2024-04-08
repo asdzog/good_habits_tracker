@@ -190,3 +190,16 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 TG_TOKEN = os.getenv('TG_TOKEN')
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Basic': {
+            'type': 'basic'
+        },
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+        }
+    }
+}
