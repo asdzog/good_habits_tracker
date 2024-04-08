@@ -62,4 +62,4 @@ class RelatedHabitValidator:
         if related:
             related_is_pleasant = related.__dict__['is_pleasant']
             if not related_is_pleasant:
-                raise ValidationError(f'Связанной может быть только приятная привычка.')
+                raise ValidationError('Связанной может быть только приятная привычка.')
