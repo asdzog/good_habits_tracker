@@ -12,7 +12,7 @@ class HabitTestCase(APITestCase):
         self.user = User.objects.create(
             email='test@mail.com',
             password='test_psw',
-            is_active=True
+            # is_active=True
         )
 
         self.user.set_password(self.user.password)
@@ -30,8 +30,12 @@ class HabitTestCase(APITestCase):
 
     def test_create_habit(self):
         """Test of creating a habit"""
-        data = {'scheduled_time': '08:00:00',
-                'user': self.user}
+        data = {
+            'scheduled_time': '08:00:00',
+            'place': 'дома',
+            'action': 'отжаться 50 раз',
+            'award': 'выпить литр кефира',
+            'user': self.user}
 
         response = self.client.post(reverse('habits:create_habit'), data=data)
 
