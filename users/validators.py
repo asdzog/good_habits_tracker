@@ -17,4 +17,6 @@ class ChatIDValidator:
             data_ok = 'ok' in data and data['ok']
             result_valid = 'result' in data and 'type' in data['result'] and data['result']['type'] == 'private'
             if not (data_ok and result_valid):
-                raise ValidationError('Указанный Telegram Chat ID некорректный.')
+                raise ValidationError('Указанный Telegram Chat ID некорректный. '
+                                      'Если вы уверены в его правильности, убедитесь, '
+                                      'что TG_TOKEN указан в настройках верно')

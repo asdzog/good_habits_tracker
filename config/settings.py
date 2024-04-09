@@ -89,11 +89,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DB_ENGINE'),  # клиент СУБД
+        'ENGINE': 'django.db.backends.postgresql',  # клиент СУБД
         'NAME': os.getenv('POSTGRES_DB'),  # Название базы данных
         'USER': os.getenv('POSTGRES_USER'),  # Пользователь для подключения
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),  # Пароль для этого пользователя
         'PORT': os.getenv('POSTGRES_PORT'),
+        'HOST': os.getenv('POSTGRES_HOST'),
     }
 }
 
@@ -122,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "Europe/Saratov"
 
 USE_I18N = True
 
@@ -184,8 +185,21 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_BEAT_SCHEDULE = {
     'task-name': {
         'task': 'habits.tasks.send_reminder',  # путь к задаче
-        'schedule': timedelta(minutes=10),  # периодичность, в данном случае - каждые 10 минут
+        'schedule': timedelta(minutes=1),  # периодичность, в данном случае - каждую минуту
     },
 }
 
 TG_TOKEN = os.getenv('TG_TOKEN')
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Basic': {
+            'type': 'basic'
+        },
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+        }
+    }
+}
